@@ -1,0 +1,12 @@
+#!/bin/sh
+
+ALT=xterm-filter
+PKG=bluit
+
+case "$1" in
+remove|deconfigure)
+	update-alternatives --quiet --remove $ALT /usr/bin/$PKG
+	;;
+esac
+
+#DEBHELPER#

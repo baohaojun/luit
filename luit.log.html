@@ -1,0 +1,549 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+ *****************************************************************************
+ * Copyright 2006-2012,2013 by Thomas E. Dickey                              *
+ * All Rights Reserved.                                                      *
+ *                                                                           *
+ * Permission to use, copy, modify, and distribute this software and its     *
+ * documentation for any purpose and without fee is hereby granted, provided *
+ * that the above copyright notice appear in all copies and that both that   *
+ * copyright notice and this permission notice appear in supporting          *
+ * documentation, and that the name of the above listed copyright holder(s)  *
+ * not be used in advertising or publicity pertaining to distribution of the *
+ * software without specific, written prior permission.                      *
+ *                                                                           *
+ * THE ABOVE LISTED COPYRIGHT HOLDER(S) DISCLAIM ALL WARRANTIES WITH REGARD  *
+ * TO THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND *
+ * FITNESS, IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT HOLDER(S) BE LIABLE *
+ * FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES         *
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     *
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   *
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            *
+ *****************************************************************************
+  $XTermId: luit.log.html,v 1.137 2013/02/17 11:35:52 tom Exp $
+  -->
+
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
+
+  <title>LUIT - Change Log</title>
+  <link rev="MADE" href="mailto:dickey@invisible-island.net">
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii">
+</head>
+
+<body>
+  <hr>
+  Copyright 2006-2012,2013 by <a href=
+  "mailto:dickey@invisible-island.net">Thomas E. Dickey</a>
+  <hr>
+
+  <p>This file contains a list of the changes that I have made for
+  luit.</p>
+
+  <p><a id="t20130217" name="t20130217">2013/02/17</a> -</p>
+
+  <ul>
+    <li>bump to 2.0, reflecting changes</li>
+
+    <li>add character-set entries for CP1255 and CNS-11643 planes
+    1-3 to allow use of some of the remaining ".enc" files.</li>
+
+    <li>modify <code>-list</code> option to show character set
+    sizes.</li>
+
+    <li>add <code>-prefer</code> option to control the lookup order
+    between iconv, fontenc, builtin and posix character set
+    data.</li>
+
+    <li>add <code>-show-builtin</code> option to show details of a
+    particular built-in encoding.</li>
+
+    <li>add <code>-list-builtin</code> option to show built-in
+    encodings embedded. This is available only for the iconv
+    configuration; the fontenc library has no API for retrieving
+    the information.</li>
+
+    <li>change defaults for configure script options
+    <code>--enable-iconv</code> and <code>--enable-fontenc</code>
+    to deprecate the fontenc library.</li>
+
+    <li>replaced existing built-in encoding tables with augmented
+    set generated from iconv to obviate need for fontenc's tables
+    as a fallback.</li>
+
+    <li>add prefix translations from <code>IBM-CP</code> to
+    <code>CP&nbsp;</code>), etc., to make fontenc's encoding name
+    "ibm-cp866" work with luit.</li>
+
+    <li>add <code>koi8-e</code> to locale-charsets table, to make
+    that encoding work.</li>
+
+    <li>add <code>-show-iconv</code> to show a given encoding from
+    iconv using the ".enc" format.</li>
+
+    <li>add <code>-fill-fontenc</code> option to control output
+    format of <code>-show-fontenc</code>.</li>
+
+    <li>add <code>-show-fontenc</code> option to show a given
+    encoding, e.g., from a ".enc" file using the ".enc"
+    format.</li>
+
+    <li>add <code>-list-fontenc</code> option to show available
+    encodings using the ".enc" files which should be distributed
+    with the fontencoding library.</li>
+
+    <li>add <code>-list-iconv</code> option to show encodings and
+    corresponding locales supported in the <em>iconv</em>
+    configuration.</li>
+
+    <li>document <code>-kg0</code>, etc., in manpage.</li>
+
+    <li>revise the help option <code>-h</code>, providing a summary
+    of each option rather than the abbreviated listing. The
+    abbreviated listing is still provided when an unrecognized
+    option is encountered.</li>
+
+    <li>improve error recovery in the iconv configuration by
+    falling back to POSIX encoding if no encoding can be found in
+    the system's tables.</li>
+
+    <li>apply workaround from xterm patch #279 to make window size
+    set for pty implementation such as Mac OS X which lose this
+    when opening the other side of the connection.</li>
+
+    <li>fix issues from Coverity scan; all were minor.</li>
+
+    <li>update config.guess, config.sub</li>
+  </ul>
+
+  <p><a id="t20121014" name="t20121014">2012/10/14</a> -</p>
+
+  <ul>
+    <li>review/improve no-leaks checking with valgrind.</li>
+
+    <li>add null-pointer checks in <code>copyOut</code> in case a
+    non-8bit encoding was used with the iconv configuration.</li>
+
+    <li>document environment variables used by luit in its
+    manpage.</li>
+
+    <li>amend the check using <code>nl_langinfo(CODESET)</code> in
+    <a href="#t20111030">2011/10/30</a> changes, ignoring that
+    section if the <code>-encoding</code> option was given (report
+    by Alexios Zavras).</li>
+
+    <li>support <code>--datarootdir</code> option in configure
+    script.</li>
+
+    <li>updated configure macros:
+
+      <dl>
+        <dt>CF_FUNC_GRANTPT</dt>
+
+        <dd>add another step to the test-program.</dd>
+
+        <dt>CF_FUNC_POLL</dt>
+
+        <dd>fix the case where stdin is redirected, e.g., in
+        rpm/dpkg builds (reported in Debian #676461). Also correct
+        return-check, which could have been confused by typing on
+        the keyboard while the check was running.</dd>
+
+        <dt>CF_GCC_ATTRIBUTES</dt>
+
+        <dd>use AC_DEFINE_UNQUOTED() rather than appending to
+        confdefs.h, since long-ago concern about the ability to
+        pass-through parameterized macros appears to be not a
+        problem, testing with 2.13 and 2.52</dd>
+
+        <dt>CF_GCC_VERSION</dt>
+
+        <dd>add workaround for Debian's modification of the version
+        message</dd>
+
+        <dt>CF_GCC_WARNINGS</dt>
+
+        <dd>add check for clang</dd>
+
+        <dt>CF_PATHSEP</dt>
+
+        <dd>add message to show the actual value used.</dd>
+
+        <dt>CF_PATH_SYNTAX</dt>
+
+        <dd>also match (for substitution) variables such as
+        ${includedir}</dd>
+
+        <dt>CF_WITH_PATH</dt>
+
+        <dd>fix after changes in ncurses to use --datarootdir</dd>
+
+        <dt>CF__GRANTPT_BODY</dt>
+
+        <dd>add an ifdef'd chunk #5 for testing the 'tty' (rather
+        than 'pty') and moved the important 'pty' chunk before
+        opening the slave device as a simple way of making the test
+        program lose any possible race between parent/child
+        processes in initializing both sides of the pseudoterminal
+        (report by Christian Weisgerber).</dd>
+
+        <dt>miscellaneous</dt>
+
+        <dd>cleanup based on byacc 20121003.</dd>
+      </dl>
+    </li>
+
+    <li>update config.guess, config.sub</li>
+  </ul>
+
+  <p><a id="t20120129" name="t20120129">2012/1/29</a> -</p>
+
+  <ul>
+    <li>improve portability of the iconv configuration by checking
+    alternate forms for the encoding name passed to
+    <code>iconv_open</code>.</li>
+
+    <li>add configure check for working <code>posix_openpt</code>,
+    which may be broken in Mac OS X's current release 10.7 Lion
+    (report by Kirby Zhou).</li>
+
+    <li>add some error checking for the <code>poll</code> and
+    <code>select</code> logic to avoid looping when a file
+    descriptor is no longer valid.</li>
+
+    <li>improve configure check for working <code>poll</code>
+    function to avoid using Mac OS X's broken implementation
+    (tested with Darwin 10.8.0).</li>
+
+    <li>updated configure script macros:
+
+      <dl>
+        <dt>CF_FUNC_GRANTPT</dt>
+
+        <dd>modify check to exclude Darwin 9.x and lower from using
+        posix_openpt. Bug report for xterm by Christian Ebert for
+        9.8.0 says screensize does not work for the pty.</dd>
+
+        <dt>CF_XOPEN_SOURCE fixes for redefinition of _XOPEN_SOURCE
+        on a few platforms: Mac OS X, IRIX64. Also workarounds for
+        header inconsistencies with OpenBSD and MirBSD.</dt>
+      </dl>
+    </li>
+  </ul>
+
+  <p><a id="t20111030" name="t20111030">2011/10/30</a> -</p>
+
+  <ul>
+    <li>modify configure script to add <code>X_LIBS</code> symbol
+    after resolving fontenc library, to use the associated
+    <code>-L</code> option in subsequent configure-checks.</li>
+
+    <li>add <code>-t</code> to simplify testing available locales
+    versus luit's tables and the <code>locale.alias</code>
+    file.</li>
+
+    <li>add "US-ASCII" for C/POSIX to the locale-charset
+    table.</li>
+
+    <li>add entries to the locale-charset table to correspond with
+    the font-encoding table, making it possible to use locales
+    defined with each named charset (reported by Andrey Ivanov,
+    also reported in Freedesktop #41857).</li>
+
+    <li>modify the lookup by locale charset to help match results
+    from <code>nl_langinfo(CODESET)</code> by mapping commonly used
+    prefixes into the prefixes used by luit.</li>
+
+    <li>check for, and use <code>nl_langinfo(CODESET)</code> to
+    augment X's <code>locale.aliases</code> file for determining
+    the encoding to use.</li>
+
+    <li>workaround limitation in copying terminal settings on
+    Solaris from original tty to pty.</li>
+
+    <li>add /usr/openwin/lib/locale to search-list of locale.alias
+    for Solaris 10.</li>
+
+    <li>improve configure script so that it does not error-out if
+    fontenc is unavailable, using iconv instead.</li>
+
+    <li>bump version to 1.2, noting xorg hackers having marked
+    (with only cosmetic changes) the <a href=
+    "#t20100601">2010/6/1</a> snapshot as "1.1.0".</li>
+
+    <li>add/use configure check for <code>posix_openpt</code>,
+    prompted by FreeBSD ports/161480.</li>
+
+    <li>updated configure script macros: CF_ANSI_CC_CHECK
+    CF_DISABLE_RPATH_HACK CF_LD_RPATH_OPT CF_PKG_CONFIG
+    CF_RPATH_HACK CF_SVR4 CF_WITH_ZLIB CF_XOPEN_SOURCE</li>
+
+    <li>update config.guess, config.sub</li>
+  </ul>
+
+  <p><a id="t20101128" name="t20101128">2010/11/28</a> -</p>
+
+  <ul>
+    <li>use <code>plink.sh</code> script from xterm to reduce
+    unneeded library dependencies, e.g., from fontenc's buggy
+    package script.</li>
+
+    <li>eliminate quoted- and duplicate-includes.</li>
+
+    <li>make <code>-g0</code> and similar options actually work, by
+    adding checks in <code>initIso2022</code>.</li>
+
+    <li>add messages for the repeated <code>-v</code> option, to
+    show which parts of the font-encoding configuration fail, for
+    troubleshooting.</li>
+
+    <li>add configure option <code>--disable-leaks</code>,
+    etc.</li>
+
+    <li>add configure option <code>--enable-trace</code>.</li>
+
+    <li>add configure option <code>--enable-iconv</code>, to use
+    GNU iconv, which is far more portable than fontenc.
+
+      <ul>
+        <li>Initially, this supports single-byte encodings such as
+        ISO-8859-x.</li>
+
+        <li>DEC special and technical character sets are supported
+        via custom tables.</li>
+      </ul>
+    </li>
+
+    <li>use static variables and functions consistently, where
+    external linkage is not required.</li>
+
+    <li>updated configure script macros, e.g., to deprecate shell
+    syntax no longer supported by bash.</li>
+
+    <li>modify manpage to use "misc" category for the miscellaneous
+    Linux manpages cited in the "SEE ALSO" section, prompted by
+    xorg change for 1.1.0 version.
+
+      <p>Aside from that (and some cosmetic changes to C source, as
+      well as providing a different configure script), and omitting
+      this change-log, the xorg 1.1.0 is the same as the <a href=
+      "#t20100601">2010/6/1 version</a>. Its release notes <a href=
+      "http://www.mail-archive.com/xorg-announce@lists.freedesktop.org/msg01206.html">
+      state</a>:</p>
+
+      <blockquote>
+        This release includes these changes from Thomas Dickey's
+        luit-20100601:
+
+        <ul>
+          <li>add -alias option to allow override of locale.alias
+          pathname.</li>
+
+          <li>improve fix waitForInput as suggested in Freedesktop
+          #26383.</li>
+
+          <li>fix warnings from clang --analyze</li>
+        </ul>
+      </blockquote>
+    </li>
+  </ul>
+
+  <p><a id="t20100605" name="t20100605">2010/6/5</a> -</p>
+
+  <ul>
+    <li>fix a typo in ifdef for <code>&lt;sys/param.h&gt;</code>
+    which made setuid feature not work properly for FreeBSD.</li>
+
+    <li>improve configure check for <code>locale.alias</code> file
+    for OpenSolaris.</li>
+
+    <li>add configure option <code>--disable-rpath-hack</code>,
+    modified configure script to normally supply an rpath option if
+    possible to simplify linkage to libraries in unusual
+    places.</li>
+  </ul>
+
+  <p><a id="t20100601" name="t20100601">2010/6/1</a> -</p>
+
+  <ul>
+    <li>add makefile rules for generating pdf, etc., for
+    manpage.</li>
+
+    <li>modify <code>minstall.sh</code> to update program name if
+    the configure script options such as
+    <code>--program-prefix</code> were used to rename the
+    program.</li>
+
+    <li>add Debian package scripts (requires some
+    assembly...).</li>
+
+    <li>add rpm spec-file (see <a href=
+    "ftp://invisible-island.net/RPMS">my ftp area</a> for
+    binaries).</li>
+
+    <li>add <code>-alias</code> option to allow override of
+    <code>locale.alias</code> pathname.</li>
+
+    <li>improve configure check for <code>locale.alias</code> file
+    for NetBSD.</li>
+
+    <li>improve fix <code>waitForInput</code> as suggested in
+    Freedesktop #26383.</li>
+
+    <li>drop <code>mkdirs.sh</code>, use
+    <code>mkdir&nbsp;-p</code>.</li>
+
+    <li>improve configure script for ctags/etags, e.g., to work
+    with pkgsrc.</li>
+
+    <li>drop <code>Imakefile</code></li>
+
+    <li>fix warnings from <code>clang --analyze</code></li>
+
+    <li>updated configure script macros, mostly for quoting- and
+    variable initialization fixes.</li>
+
+    <li>update config.guess, config.sub</li>
+  </ul>
+
+  <p><a id="t20091014" name="t20091014">2009/10/14</a> -</p>
+
+  <ul>
+    <li>add <code>-V</code> version option.</li>
+
+    <li>work around defective implementation of gcc attribute
+    warn_unused_return.</li>
+
+    <li>add configure check for <code>openpty</code>, use that on
+    systems such as OpenBSD rather than requiring setuid
+    operation.</li>
+
+    <li>ifdef <code>open</code> to work with incomplete definitions
+    for <code>O_NOCTTY</code> and <code>TIOCSCTTY</code> (adapted
+    from patch by Yaakov Selkowitz).</li>
+  </ul>
+
+  <p><a id="t20090816" name="t20090816">2009/8/16</a> -</p>
+
+  <ul>
+    <li>reset connection to blocking mode on exit.</li>
+
+    <li>modify <code>poll</code>-flavor of
+    <code>waitForInput</code> to also check if the connection has
+    hung up.</li>
+
+    <li>improve initialization for <code>-p</code> command-line
+    option to work with more BSD-flavors.</li>
+
+    <li>improve configure script checks for font encoding library
+    using AC_PATH_XTRA, and noting that font encoding library may
+    depend upon z library.</li>
+
+    <li>replace #ifdef to define <code>HAVE_GRANTPT</code> with
+    configure script.</li>
+
+    <li>improve use of <code>const</code> more consistently in
+    sources.</li>
+
+    <li>clean up include-dependencies by including config.h before
+    other includes.</li>
+
+    <li>add change from xorg git:
+
+      <ul>
+        <li>luit: Convert platform #ifdefs to configure tests for
+        functions &amp; headers<br>
+        (adds configure checks for functions and headers used to
+        open pty's, uses that to replace a derived #define for
+        <code>HAVE_POLL</code>, #ifdef's the corresponding headers
+        and modifies #ifdef for <code>I_PUSH</code> ioctl to add
+        <code>__SVR4</code>).</li>
+      </ul>
+    </li>
+
+    <li>updated configure script macros: CF_ADD_CFLAGS
+    CF_ADD_INCDIR CF_ADD_LIBDIR CF_ADD_SEARCHPATH CF_FIND_LINKAGE
+    CF_GCC_ATTRIBUTES CF_GCC_WARNINGS CF_HEADER_PATH
+    CF_LIBRARY_PATH CF_PATH_PROG CF_PKG_CONFIG CF_XOPEN_SOURCE
+    CF_X_FONTENC</li>
+
+    <li>update configure utility scripts (config.guess, config.sub,
+    install-sh, mkdirs.sh).</li>
+  </ul>
+
+  <p><a id="t20080829" name="t20080829">2008/8/29</a> -</p>
+
+  <ul>
+    <li>add <code>-p</code> option, to make the wait-pipe
+    workaround from XFree86 optional. The default behavior is the
+    older one.</li>
+  </ul>
+
+  <p><a id="t20080824" name="t20080824">2008/8/24</a> -</p>
+
+  <ul>
+    <li>add ifdef for <code>NO_LEAKS</code>, to check for memory
+    leaks. Found none in luit; font encoding library does have
+    leaks.</li>
+  </ul>
+
+  <p><a id="t20080823" name="t20080823">2008/8/23</a> -</p>
+
+  <ul>
+    <li>update <code>minstall.sh</code> from xterm to fix possible
+    scripting dependency upon locale.</li>
+
+    <li>set ncurses' <code>NCURSES_NO_UTF8_ACS</code> environment
+    variable to simplify use of line-drawing characters in
+    <code>luit</code>.</li>
+
+    <li>improve default value for <code>locale.alias</code>
+    pathname by checking in the more common X11 locations.</li>
+  </ul>
+
+  <p><a id="t20080821" name="t20080821">2008/8/21</a> -</p>
+
+  <ul>
+    <li>use codepage change from luit 1.0.2</li>
+
+    <li>modify configure script so
+    <code>--with-fontenc-cflags</code> and
+    <code>--with-fontenc-libs</code> options with when
+    <code>pkg-config</code> is not available.</li>
+
+    <li>fixes for configuring fontenc library without
+    <code>pkg-config</code>.</li>
+
+    <li>fixes for gcc <code>-Wwrite-strings</code> warnings.</li>
+
+    <li>fixes for gcc <code>-Wconversion</code> warnings.</li>
+
+    <li>updated configure script macros CF_ANSI_CC_REQD,
+    CF_CHECK_CACHE, CF_FIND_LIBRARY, CF_GCC_ATTRIBUTES,
+    CF_GCC_WARNINGS, CF_IMAKE_CFLAGS, CF_MSG_LOG, CF_PATH_SYNTAX,
+    CF_POSIX_SAVED_IDS, CF_SUBDIR_PATH, CF_TYPE_FD_SET, CF_VERBOSE,
+    CF_WITH_PATH, CF_WITH_ZLIB, CF_XOPEN_SOURCE.</li>
+
+    <li>update configure utility scripts (config.guess, config.sub,
+    install-sh, mkdirs.sh).</li>
+  </ul>
+
+  <p><a id="t20080820" name="t20080820">2006/8/20</a> -</p>
+
+  <ul>
+    <li>import snapshot from XFree86 (last change 2005/2/9).</li>
+
+    <li>inspected Xorg sources, found no newer changes of
+    note.</li>
+
+    <li>wrote a configure script.</li>
+
+    <li>minor code cleanup (fix compiler warnings, add ifdef's to
+    prevent repeated inclusion of header files, remove redundant
+    #include's, indented code).</li>
+  </ul>
+</body>
+</html>
