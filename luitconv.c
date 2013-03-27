@@ -503,7 +503,10 @@ initialize8bitTable(LuitConv * data)
 
 	    data->rev_index[data->len_index].ucs = data->table_utf8[n].ucs;
 	    data->rev_index[data->len_index].ch = n;
-	    data->len_index++;
+
+	    if (n != data->table_utf8[n].ucs) {
+		data->len_index++;
+	    }
 	}
     }
 }
@@ -620,7 +623,9 @@ initialize16bitTable(const char *charset, LuitConv ** datap, unsigned gmax)
 
 	    data->rev_index[data->len_index].ucs = n;
 	    data->rev_index[data->len_index].ch = my_code;
-	    data->len_index++;
+	    if (n != data->table_utf8[n].ucs) {
+		data->len_index++;
+	    }
 	}
 	iconv_close(my_desc);
     }
@@ -743,7 +748,10 @@ initializeBuiltInTable(LuitConv * data,
 
 	    data->rev_index[data->len_index].ucs = data->table_utf8[j].ucs;
 	    data->rev_index[data->len_index].ch = (unsigned) j;
-	    data->len_index++;
+	    if (n != data->table_utf8[n].ucs) {
+		data->len_index++;
+	    }
+
 	}
     }
 }
